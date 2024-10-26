@@ -1,7 +1,3 @@
-Here’s the updated README with instructions to add the outputs file:
-
----
-
 # Terraform AWS Free-Tier EC2 Module
 
 This Terraform module creates a free-tier eligible `t2.micro` EC2 instance on AWS. It is designed for reusability across different projects while ensuring compliance with AWS Free Tier limits.
