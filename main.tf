@@ -17,7 +17,7 @@ resource "aws_instance" "project_demo" {
 }
 
 resource "aws_security_group" "demo" {
-  name        = "demo_sg"
+  name        = var.security_group_name
   description = "Demo security group"
 
   ingress {

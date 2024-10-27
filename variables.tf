@@ -13,5 +13,13 @@ variable "instance_type" {
 variable "instance_name" {
   description = "Tag for naming the instance"
   type        = string
-  default     = "project1_demo"
+  default     = "project-server"
+}
+
+
+variable "security_group_name" {
+  description = "Security Group Name"
+  type        = string
+  default     = "demo_sg"
+
 }
