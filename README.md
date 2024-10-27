@@ -13,70 +13,86 @@ This Terraform module creates a free-tier eligible `t2.micro` EC2 instance on AW
 
 ## Usage
 
-1. **Create Required Files:**
+1.  **Create Required Files:**
 
-   - In your project directory, create a `variables.tf` file with the following content to define the necessary variables:
+    - In your project directory, create a `variables.tf` file with the following content to define the necessary variables:
 
-     ```hcl
-     variable "aws_access_key" {
-       description = "AWS access key for authentication"
-       type        = string
-     }
+           ```hcl
+           variable "aws_access_key" {
+             description = "AWS access key for authentication"
+             type        = string
+           }
 
-     variable "aws_secret_key" {
-       description = "AWS secret key for authentication"
-       type        = string
-     }
+           variable "aws_secret_key" {
+             description = "AWS secret key for authentication"
+             type        = string
+           }
 
-     variable "aws_token" {
-       description = "Session token for temporary access"
-       type        = string
-       default     = null
-     }
+           variable "aws_token" {
+             description = "Session token for temporary access"
+             type        = string
+             default     = null
+           }
 
-     variable "aws_region" {
-       description = "AWS region to deploy resources"
-       type        = string
-       default     = "us-east-1"
-     }
-     ```
+           variable "aws_region" {
+             description = "AWS region to deploy resources"
+             type        = string
+             default     = "us-east-1"
+           }
 
-   - Also, create a `provider.tf` file for provider configuration:
+           variable "instance_name" {
+            description = "Tag for naming the instance"
+            type = string
+            default = "project-server"
+          }
 
-     ```hcl
-     terraform {
-       required_providers {
-         aws = {
-           source  = "hashicorp/aws"
-           version = "~> 3.0"
-         }
-       }
-       required_version = ">= 0.12"
-     }
+          variable "security_group_name" {
+            description = "Security Group Name"
+            type = string
+            default = "demo_sg"
 
-     provider "aws" {
-       region     = var.aws_region
-       access_key = var.aws_access_key
-       secret_key = var.aws_secret_key
-       token      = var.aws_token
-     }
-     ```
+          }
 
-   - Lastly, add an `outputs.tf` file to define the output values:
+    ```
 
-     ```hcl
-     output "instance_id" {
-       value = module.ec2_instance.instance_id
-     }
+    ```
 
-     output "public_ip" {
-       value = module.ec2_instance.public_ip
-     }
+- Also, create a `provider.tf` file for provider configuration:
 
-     output "public_dns" {
-       value = module.ec2_instance.public_dns
-     }
-     ```
+  ```hcl
+  terraform {
+    required_providers {
+      aws = {
+        source  = "hashicorp/aws"
+        version = "~> 3.0"
+      }
+    }
+    required_version = ">= 0.12"
+  }
+
+  provider "aws" {
+    region     = var.aws_region
+    access_key = var.aws_access_key
+    secret_key = var.aws_secret_key
+    token      = var.aws_token
+  }
+  ```
+
+- Lastly, add an `outputs.tf` file to define the output values:
+
+  ```hcl
+  output "instance_id" {
+    value = module.ec2_instance.instance_id
+  }
+
+  output "public_ip" {
+    value = module.ec2_instance.public_ip
+  }
+
+  output "public_dns" {
+    value = module.ec2_instance.public_dns
+  }
+  ```
 
 2. **Define Variables**: In the same project directory, create a `terraform.tfvars` file with the following content:
 
