@@ -1,22 +1,18 @@
 # main.tf in terraform-aws-free-tier-ec2 module
 
-resource "aws_instance" "project_demo" {
-  ami                    = var.ami_id
-  instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.demo.id]
 
-  tags = {
-    Name = var.instance_name
+# Look for an existing security group by name
+data "aws_security_group" "existing_sg" {
+  filter {
+    name   = "group-name"
+    values = [var.security_group_name]
   }
 
-  user_data = var.user_data
-  #user_data = <<-EOF
-  #           #!/bin/bash
-  #          sudo apt-get update
-  #         sudo apt-get install -y ansible
-  #        EOF
+  #filter {
+  # name   = "vpc-id"
+  #values = [var.vpc_id] # Make sure to specify the correct VPC ID
+  #}
 }
-
 resource "aws_security_group" "demo" {
   name        = var.security_group_name
   description = "Demo security group"
@@ -69,4 +65,22 @@ resource "aws_security_group" "demo" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_instance" "project_demo" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  #vpc_security_group_ids = [aws_security_group.demo.id]
+  vpc_security_group_ids = length(data.aws_security_group.existing_sg.id) > 0 ? [data.aws_security_group.existing_sg.id] : [aws_security_group.demo[0].id]
+
+  tags = {
+    Name = var.instance_name
+  }
+
+  user_data = var.user_data
+  #user_data = <<-EOF
+  #           #!/bin/bash
+  #          sudo apt-get update
+  #         sudo apt-get install -y ansible
+  #        EOF
 }
