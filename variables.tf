@@ -23,3 +23,9 @@ variable "security_group_name" {
   default     = "demo_sg"
 
 }
+
+variable "user_data" {
+  description = "User data script to be run on instance launch"
+  type        = string
+  default     = "null"
+}

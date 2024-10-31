@@ -9,11 +9,12 @@ resource "aws_instance" "project_demo" {
     Name = var.instance_name
   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo apt-get update
-              sudo apt-get install -y ansible
-              EOF
+  user_data = var.user_data
+  #user_data = <<-EOF
+  #           #!/bin/bash
+  #          sudo apt-get update
+  #         sudo apt-get install -y ansible
+  #        EOF
 }
 
 resource "aws_security_group" "demo" {
